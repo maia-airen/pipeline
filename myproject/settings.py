@@ -137,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 STATIC_URL = '/static/'  # Use trailing slash
 STATICFILES_DIRS = [   
-    BASE_DIR / "static", 
+    BASE_DIR / "myproject/static",  # Corrected path
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Used for 'collectstatic' in production
 

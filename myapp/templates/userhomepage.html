@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Youth Portal</title>
+    <title>Coding Nexus E Learning Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary: #2563eb;
-            --secondary: #1d4ed8;
-            --background: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
+            --primary: #9B2C2C;
+            --secondary: #822727;
+            --accent: #C53030;
+            --background: #FFF5F5;
+            --card: #FFFFFF;
+            --text: #2D3748;
+            --text-light: #4A5568;
         }
 
         * {
@@ -24,12 +25,13 @@
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background-color: var(--background);
+            background-image: linear-gradient(135deg, rgba(155,44,44,0.1) 0%, rgba(197,48,48,0.1) 100%);
             color: var(--text);
             line-height: 1.6;
         }
 
         .navbar {
-            background: var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             padding: 1rem;
             position: fixed;
             width: 100%;
@@ -70,6 +72,7 @@
 
         .nav-link:hover {
             opacity: 0.8;
+            background: rgba(255,255,255,0.1);
         }
 
         .container {
@@ -85,6 +88,19 @@
             color: white;
             text-align: center;
             margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">👨‍💻</text></svg>') center/50px repeat;
+            opacity: 0.1;
         }
 
         .hero h1 {
@@ -200,87 +216,84 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-brand">SK Youth Portal</a>
+            <a href="#" class="nav-brand">BSIT E-Learning Hub</a>
             <div class="nav-links">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Events</span>
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    <span>Members</span>
-                </a>
-                <a href="{% url 'logout' %}" class="nav-link">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
+                <a href="#" class="nav-link"><i class="fas fa-laptop-code"></i> Courses</a>
+                <a href="#" class="nav-link"><i class="fas fa-tasks"></i> Assignments</a>
+                <a href="#" class="nav-link"><i class="fas fa-users"></i> Study Groups</a>
+                <a href="{% url 'logout' %}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </nav>
 
     <div class="container">
         <div class="hero">
-            <h1>Welcome to SK Youth Portal</h1>
-            <p>Empowering the youth through leadership, community service, and social engagement</p>
+            <h1>Welcome to BSIT E-Learning Hub</h1>
+            <p>Your comprehensive platform for IT education and skill development</p>
         </div>
 
         <div class="profile">
             <div class="profile-image">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-graduate"></i>
             </div>
             <div class="profile-info">
                 <h2>{{ user_data.username }}</h2>
-                <p>{{ user_data.email }} | SK Youth Member</p>
+                <p>{{ user_data.email }} | BSIT Student</p>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number">15</div>
-                <div class="stat-label">Upcoming Events</div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Active Courses</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">248</div>
-                <div class="stat-label">Active Members</div>
+                <div class="stat-number">85%</                <div class="stat-label">Progress</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">12</div>
-                <div class="stat-label">Projects</div>
+                <div class="stat-label">Certificates</div>
             </div>
         </div>
 
         <div class="grid">
             <div class="card">
                 <h3 class="card-title">
-                    <i class="fas fa-bullhorn"></i>
-                    Announcements
+                    <i class="fas fa-code"></i>
+                    Programming Courses
                 </h3>
                 <p class="card-content">
-                    Stay updated with the latest news, events, and opportunities for youth development in our community.
+                    Access courses in Java, Python, Web Development, and more. Track your progress and earn certificates.
                 </p>
             </div>
 
             <div class="card">
                 <h3 class="card-title">
-                    <i class="fas fa-calendar-check"></i>
-                    Upcoming Activities
+                    <i class="fas fa-database"></i>
+                    Database Management
                 </h3>
                 <p class="card-content">
-                    Join our various youth programs, workshops, and community service activities planned for this month.
+                    Learn SQL, MongoDB, and database design principles through interactive lessons and projects.
                 </p>
             </div>
 
             <div class="card">
                 <h3 class="card-title">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    Community Impact
+                    <i class="fas fa-network-wired"></i>
+                    Networking Fundamentals
                 </h3>
                 <p class="card-content">
-                    Discover how our SK youth initiatives are making a positive difference in our local community.
+                    Master computer networking concepts, protocols, and cybersecurity basics.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-project-diagram"></i>
+                    Systems Analysis
+                </h3>
+                <p class="card-content">
+                    Learn system design, UML modeling, and project management methodologies.
                 </p>
             </div>
         </div>
