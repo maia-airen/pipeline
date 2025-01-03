@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Youth Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1d4ed8;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--primary);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 3rem 1rem;
+            border-radius: 1rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            color: var(--text-light);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .profile-info h2 {
+            color: var(--text);
+        }
+
+        .profile-info p {
+            color: var(--text-light);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">SK Youth Portal</a>
+            <div class="nav-links">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="{% url 'logout' %}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome to SK Youth Portal</h1>
+            <p>Empowering the youth through leadership, community service, and social engagement</p>
+        </div>
+
+        <div class="profile">
+            <div class="profile-image">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h2>{{ user_data.username }}</h2>
+                <p>{{ user_data.email }} | SK Youth Member</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Upcoming Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">248</div>
+                <div class="stat-label">Active Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Projects</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-bullhorn"></i>
+                    Announcements
+                </h3>
+                <p class="card-content">
+                    Stay updated with the latest news, events, and opportunities for youth development in our community.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-calendar-check"></i>
+                    Upcoming Activities
+                </h3>
+                <p class="card-content">
+                    Join our various youth programs, workshops, and community service activities planned for this month.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    Community Impact
+                </h3>
+                <p class="card-content">
+                    Discover how our SK youth initiatives are making a positive difference in our local community.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add any additional JavaScript functionality here
+    </script>
+</body>
+</html>

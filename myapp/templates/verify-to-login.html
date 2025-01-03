@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .otp-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .otp-input {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.25rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .otp-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .resend {
+            color: var(--primary);
+            text-decoration: none;
+            margin-left: 0.25rem;
+        }
+
+        .resend:hover {
+            text-decoration: underline;
+        }
+
+        .resend.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 1.5rem;
+            }
+
+            .otp-input {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1 class="title">Enter verification code</h1>
+            <p class="subtitle">We've sent a code to your email</p>
+        </div>
+
+        <form method="POST" action="{% url 'OTPVerification' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user_id }}" />
+            
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d" required>
+                <input type="hidden" name="otp" id="otp-value">
+            </div>
+
+            <button type="submit" class="submit-btn">Verify</button>
+        </form>
+
+        <div class="footer">
+            <span>Didn't receive the code?</span>
+            <a href="#" class="resend" id="resend-link">Resend (<span id="timer">30</span>s)</a>
+        </div>
+    </div>
+
+    <script>
+        // Handle OTP input
+        const inputs = document.querySelectorAll('.otp-input');
+        const form = document.querySelector('form');
+        const otpValue = document.getElementById('otp-value');
+
+        inputs.forEach((input, index) => {
+            // Auto-focus next input
+            input.addEventListener('input', (e) => {
+                if (e.target.value) {
+                    const next = inputs[index + 1];
+                    if (next) next.focus();
+                }
+            });
+
+            // Handle backspace
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value) {
+                    const prev = inputs[index - 1];
+                    if (prev) prev.focus();
+                }
+            });
+
+            // Handle paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const paste = e.clipboardData.getData('text');
+                const digits = paste.match(/\d/g);
+                if (digits) {
+                    digits.forEach((digit, i) => {
+                        if (inputs[i]) {
+                            inputs[i].value = digit;
+                            if (inputs[i + 1]) inputs[i + 1].focus();
+                        }
+                    });
+                }
+            });
+        });
+
+        // Combine inputs on form submit
+        form.addEventListener('submit', (e) => {
+            const code = [...inputs].map(input => input.value).join('');
+            otpValue.value = code;
+        });
+
+        // Resend timer
+        let timeLeft = 30;
+        const timerElement = document.getElementById('timer');
+        const resendLink = document.getElementById('resend-link');
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                setTimeout(updateTimer, 1000);
+            } else {
+                resendLink.classList.remove('disabled');
+                resendLink.innerHTML = 'Resend code';
+            }
+        }
+
+        resendLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (timeLeft === 0) {
+                timeLeft = 30;
+                resendLink.classList.add('disabled');
+                resendLink.innerHTML = `Resend (<span id="timer">${timeLeft}</span>s)`;
+                updateTimer();
+                // Add your resend logic here
+            }
+        });
+
+        updateTimer();
+    </script>
+</body>
+</html>
